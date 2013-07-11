@@ -11,6 +11,7 @@ from docopt import docopt
 import itunes
 from pit import Pit
 import twitter
+import googl
 
 def search_itunes_store(title, media):
     """
@@ -25,13 +26,13 @@ def search_itunes_store(title, media):
         urls.append(item.get_url())
 
     # return top hits
-    return titles[0], urls[0] if len(items)!=0 else ""
+    return titles[0], urls[0] if len(items)!=0 else None
 
 def main():
     args = docopt(__doc__, version="1.0")
-    title = args['-t']
+    title = args['-t'].decode('utf-8')
     media = args['-m']
-    comment = args['-c']
+    comment = args['-c'].decode('utf-8')
     
     auth = Pit.get("twitter.com")
     api = twitter.Api(consumer_key = auth['ConsumerKey'],
@@ -40,7 +41,14 @@ def main():
                       access_token_secret = auth['AccessTokenSecret'])
 
     full_title, url = search_itunes_store(title, media)
-    print "%s [%s]" %(full_title, url)
+
+    if url is None:
+        print "No result..."
+
+    g = googl.Googl()
+    short_url = g.shorten(url)
+
+    print "%s - [%s]" %(title, short_url['id'])
 
 if __name__ == '__main__':
     main()
