@@ -33,22 +33,29 @@ def main():
     title = args['-t'].decode('utf-8')
     media = args['-m']
     comment = args['-c'].decode('utf-8')
-    
+
+    # search content and get URL
+    full_title, url = search_itunes_store(title, media)
+
+    if url is None:
+        print "No result..."
+
+    # shorten URL
+    g = googl.Googl()
+    short_url = g.shorten(url)
+    print "%s -> %s" %(url, short_url['id'])
+
+    # post to Twitter
     auth = Pit.get("twitter.com")
     api = twitter.Api(consumer_key = auth['ConsumerKey'],
                       consumer_secret = auth['ConsumerSecret'],
                       access_token_key = auth['AccessToken'],
                       access_token_secret = auth['AccessTokenSecret'])
 
-    full_title, url = search_itunes_store(title, media)
+    status = comment + " " + title + " - " + "[" + short_url['id'] + "]"
+    print status
 
-    if url is None:
-        print "No result..."
-
-    g = googl.Googl()
-    short_url = g.shorten(url)
-
-    print "%s - [%s]" %(title, short_url['id'])
+    api.PostUpdate(status)
 
 if __name__ == '__main__':
     main()
