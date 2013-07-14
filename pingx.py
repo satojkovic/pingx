@@ -1,10 +1,11 @@
 #-*- encoding: utf-8 -*-
 
-"""Usage: pingx.py [-t TITLE] [-m MEDIA] [-c COMMENT]
+"""Usage: pingx.py <-t title> <-m media> [-c <comment>]
 
--t TITLE   specify a title
--m MEDIA   specify a media
--c COMMENT your review comment
+Options:
+    -t title   specify a title
+    -m media   specify a media
+    -c <comment> your review comment
 """
 
 from docopt import docopt
