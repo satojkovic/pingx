@@ -1,6 +1,6 @@
 #-*- encoding: utf-8 -*-
 
-"""Usage: pingx.py <-t title> <-m media> [-c <comment>]
+"""Usage: pingx <-t title> <-m media> [-c <comment>]
 
 Options:
     -t title   specify a title
